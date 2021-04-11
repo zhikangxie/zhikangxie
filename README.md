@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @zhikangxie
 - 👀 I’m interested in cryptography
-- 🌱 I’m currently a master student in Peking University
+- 🌱 I’m currently a master student in Peking University, Beijing, China
 - 📫 You can contact me through zhikangxie@pku.edu.cn
 
 <!---
