@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @zhikangxie
 - 👀 I’m interested in cryptography
-- 🌱 I’m currently a master student in Peking University, Beijing, China
-- 📫 You can contact me via zhikangxie@pku.edu.cn
+- 🌱 I’m currently a PhD student in The University of Hong Kong, Hong Kong SAR
+- 📫 You can contact me via zkxiecs@gmail.com or zhikangxie@pku.edu.cn
 
 <!---
 zhikangxie/zhikangxie is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
