@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @zhikangxie
+- 👋 Hi, I’m @Zhikang Xie
 - 👀 I’m interested in cryptography
 - 🌱 I’m currently a PhD student in The University of Hong Kong, Hong Kong SAR
 - 📫 You can contact me via zkxiecs@gmail.com
