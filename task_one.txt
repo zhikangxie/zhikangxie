@@ -1,0 +1,110 @@
+p=32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559
+q=(p-1)/2
+Zp=Integers(p)
+g=Zp(2)
+Zq=Integers(q)
+
+# generate relation
+s=Zq(randint(1,q))
+u=g^s
+# the first ciphertext is encrypted by 1
+beta=Zq(randint(1,q))
+v=g^beta
+e=u^beta*g
+# the second ciphertext is encrypted by 0
+betaprime=Zq(randint(1,q))
+vprime=g^betaprime
+eprime=u^betaprime
+
+# commit
+# simulate a conversation for (g,u,v,e)
+c_0=Zq(randint(1,q))
+z_0=Zq(randint(1,q))
+v_0=g^z_0/v^c_0
+w_0=u^z_0/e^c_0
+# simulate a conversation for (g,u,v',e'/g)
+cprime_1=Zq(randint(1,q))
+zprime_1=Zq(randint(1,q))
+vprime_1=g^zprime_1/vprime^cprime_1
+wprime_1=u^zprime_1/(eprime/g)^cprime_1
+# generate a true commitment for (g,u,v,e/g)
+beta_1=Zq(randint(1,q))
+v_1=g^beta_1
+w_1=u^beta_1
+# generate a true commitment for (g,u,v',e')
+betaprime_0=Zq(randint(1,q))
+vprime_0=g^betaprime_0
+wprime_0=u^betaprime_0
+
+# challenge
+c=Zq(randint(1,q))
+
+# respond
+# compute the challenge for (g,u,v,e/g)
+c_1=c-c_0
+# compute the challenge for (g,u,v',e')
+cprime_0=c-cprime_1
+# generate a true response for (g,u,v,e/g) and c_1
+z_1=beta_1+beta*c_1
+# generate a true response for (g,u,v',e') and c'_0
+zprime_0=betaprime_0+betaprime*cprime_0
+
+# verify
+# verify the challenges
+print('1. Verify the challenges:')
+print()
+print('c =',c)
+print('c_0+c_1 =',c_0+c_1)
+print('Has this equation passed the verification?',c==c_0+c_1)
+print()
+print('c =',c)
+print('cprime_0+cprime_1 =',cprime_0+cprime_1)
+print('Has this equation passed the verification?',c==cprime_0+cprime_1)
+print()
+# verify the first ciphertext is encrypted by 0 or 1
+print('2. Verify that the first ciphertext is encrypted by 0 or 1:')
+print('In the following steps, an actual verifier is not aware of which one is for the true conversation and which one is for the simulated conversation, although we write it explictly.')
+print()
+print('2.1. Verify the simulated conversation ((v_0,w_0),c_0,z_0) for (g,u,v,e):')
+print()
+print('g^z_0 =',g^z_0)
+print('v_0*v^c_0 =',v_0*v^c_0)
+print('Has this equation passed the verification?',g^z_0==v_0*v^c_0)
+print()
+print('u^z_0 =',u^z_0)
+print('w_0*e^c_0 =',w_0*e^c_0)
+print('Has this equation passed the verification?',u^z_0==w_0*e^c_0)
+print()
+print('2.2. Verify the true conversation ((v_1,w_1),c_1,z_1) for (g,u,v,e/g):')
+print()
+print('g^z_1 =',g^z_1)
+print('v_1*v^c_1 =',v_1*v^c_1)
+print('Has this equation passed the verification?',g^z_1==v_1*v^c_1)
+print()
+print('u^z_1 =',u^z_1)
+print('w_1*(e/g)^c_1 =',w_1*(e/g)^c_1)
+print('Has this equation passed the verification?',u^z_1==w_1*(e/g)^c_1)
+print()
+# verify the second ciphertext is encrypted by 0 or 1
+print('3. Verify that the second ciphertext is encrypted by 0 or 1:')
+print('In the following steps, an actual verifier is not aware of which one is for the true conversation and which one is for the simulated conversation, although we write it explictly.')
+print()
+print('3.1. Verify the true conversation ((vprime_0,wprime_0),cprime_0,zprime_0) for (g,u,vprime,eprime):')
+print()
+print('g^zprime_0 =',g^zprime_0)
+print('vprime_0*vprime^cprime_0 =',vprime_0*vprime^cprime_0)
+print('Has this equation passed the verification?',g^zprime_0==vprime_0*vprime^cprime_0)
+print()
+print('u^zprime_0 =',u^zprime_0)
+print('wprime_0*eprime^cprime_0 =',wprime_0*eprime^cprime_0)
+print('Has this equation passed the verification?',u^zprime_0==wprime_0*eprime^cprime_0)
+print()
+print('3.2. Verify the simulated conversation ((vprime_1,wprime_1),cprime_1,zprime_1) for (g,u,vprime,eprime/g):')
+print()
+print('g^zprime_1 =',g^zprime_1)
+print('vprime_1*vprime^cprime_1 =',vprime_1*vprime^cprime_1)
+print('Has this equation passed the verification?',g^zprime_1==vprime_1*vprime^cprime_1)
+print()
+print('u^zprime_1 =',u^zprime_1)
+print('wprime_1*(eprime/g)^cprime_1 =',wprime_1*(eprime/g)^cprime_1)
+print('Has this equation passed the verification?',u^zprime_1==wprime_1*(eprime/g)^cprime_1)
