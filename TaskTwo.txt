@@ -1,0 +1,164 @@
+p=32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559
+q=(p-1)/2
+Zp=Integers(p)
+g=Zp(2)
+Zq=Integers(q)
+
+# generate relation
+s=Zq(randint(1,q))
+u=g^s
+# the ciphertext is encrypted by 6
+beta=Zq(randint(1,q))
+b=Zq(6)
+v=g^beta
+e=u^beta*g^b
+
+# commit
+# simulate a conversation for (g,u,v,e)
+c_0=Zq(randint(1,q))
+z_0=Zq(randint(1,q))
+v_0=g^z_0/v^c_0
+w_0=u^z_0/e^c_0
+# simulate a conversation for (g,u,v,e/g)
+c_1=Zq(randint(1,q))
+z_1=Zq(randint(1,q))
+v_1=g^z_1/v^c_1
+w_1=u^z_1/(e/g)^c_1
+# simulate a conversation for (g,u,v,e/g^2)
+c_2=Zq(randint(1,q))
+z_2=Zq(randint(1,q))
+v_2=g^z_2/v^c_2
+w_2=u^z_2/(e/g^2)^c_2
+# simulate a conversation for (g,u,v,e/g^3)
+c_3=Zq(randint(3,q))
+z_3=Zq(randint(3,q))
+v_3=g^z_3/v^c_3
+w_3=u^z_3/(e/g^3)^c_3
+# simulate a conversation for (g,u,v,e/g^4)
+c_4=Zq(randint(1,q))
+z_4=Zq(randint(1,q))
+v_4=g^z_4/v^c_4
+w_4=u^z_4/(e/g^4)^c_4
+# simulate a conversation for (g,u,v,e/g^5)
+c_5=Zq(randint(1,q))
+z_5=Zq(randint(1,q))
+v_5=g^z_5/v^c_5
+w_5=u^z_5/(e/g^5)^c_5
+# generate a true commitment for (g,u,v,e/g^6)
+beta_6=Zq(randint(1,q))
+v_6=g^beta_6
+w_6=u^beta_6
+# simulate a conversation for (g,u,v,e/g^7)
+c_7=Zq(randint(1,q))
+z_7=Zq(randint(1,q))
+v_7=g^z_7/v^c_7
+w_7=u^z_7/(e/g^7)^c_7
+
+# challenge
+c=Zq(randint(1,q))
+
+# respond
+# compute the challenge for (g,u,v,e/g^6)
+c_6=c-c_0-c_1-c_2-c_3-c_4-c_5-c_7
+# generate a true response for (g,u,v,e/g^6) and c_6
+z_6=beta_6+beta*c_6
+
+# verify
+# verify the challenges
+print('1. Verify the challenges:')
+print()
+print('c =',c)
+print('c_0+c_1+c_2+c_3+c_4+c_5+c_6+c_7 =',c_0+c_1+c_2+c_3+c_4+c_5+c_6+c_7)
+print('Has this equation passed the verification?',c==c_0+c_1+c_2+c_3+c_4+c_5+c_6+c_7)
+print()
+
+print('In the following steps, an actual verifier is not aware of which is for the true conversation and which are for the simulated conversations, although we write it explictly.')
+print()
+
+print('2. Verify the simulated conversation ((v_0,w_0),c_0,z_0) for (g,u,v,e):')
+print()
+print('g^z_0 =',g^z_0)
+print('v_0*v^c_0 =',v_0*v^c_0)
+print('Has this equation passed the verification?',g^z_0==v_0*v^c_0)
+print()
+print('u^z_0 =',u^z_0)
+print('w_0*e^c_0 =',w_0*e^c_0)
+print('Has this equation passed the verification?',u^z_0==w_0*e^c_0)
+print()
+
+print('3. Verify the simulated conversation ((v_1,w_1),c_1,z_1) for (g,u,v,e/g):')
+print()
+print('g^z_1 =',g^z_1)
+print('v_1*v^c_1 =',v_1*v^c_1)
+print('Has this equation passed the verification?',g^z_1==v_1*v^c_1)
+print()
+print('u^z_1 =',u^z_1)
+print('w_1*(e/g)^c_1 =',w_1*(e/g)^c_1)
+print('Has this equation passed the verification?',u^z_1==w_1*(e/g)^c_1)
+print()
+
+print('4. Verify the simulated conversation ((v_2,w_2),c_2,z_2) for (g,u,v,e/g^2):')
+print()
+print('g^z_2 =',g^z_2)
+print('v_2*v^c_2 =',v_2*v^c_2)
+print('Has this equation passed the verification?',g^z_2==v_2*v^c_2)
+print()
+print('u^z_2 =',u^z_2)
+print('w_2*(e/g^2)^c_2 =',w_2*(e/g^2)^c_2)
+print('Has this equation passed the verification?',u^z_2==w_2*(e/g^2)^c_2)
+print()
+
+print('5. Verify the simulated conversation ((v_3,w_3),c_3,z_3) for (g,u,v,e/g^3):')
+print()
+print('g^z_3 =',g^z_3)
+print('v_3*v^c_3 =',v_3*v^c_3)
+print('Has this equation passed the verification?',g^z_3==v_3*v^c_3)
+print()
+print('u^z_3 =',u^z_3)
+print('w_3*(e/g^3)^c_3 =',w_3*(e/g^3)^c_3)
+print('Has this equation passed the verification?',u^z_3==w_3*(e/g^3)^c_3)
+print()
+
+print('6. Verify the simulated conversation ((v_4,w_4),c_4,z_4) for (g,u,v,e/g^4):')
+print()
+print('g^z_4 =',g^z_4)
+print('v_4*v^c_4 =',v_4*v^c_4)
+print('Has this equation passed the verification?',g^z_4==v_4*v^c_4)
+print()
+print('u^z_4 =',u^z_4)
+print('w_4*(e/g^4)^c_4 =',w_4*(e/g^4)^c_4)
+print('Has this equation passed the verification?',u^z_4==w_4*(e/g^4)^c_4)
+print()
+
+print('7. Verify the simulated conversation ((v_5,w_5),c_5,z_5) for (g,u,v,e/g^5):')
+print()
+print('g^z_5 =',g^z_5)
+print('v_5*v^c_5 =',v_5*v^c_5)
+print('Has this equation passed the verification?',g^z_5==v_5*v^c_5)
+print()
+print('u^z_5 =',u^z_5)
+print('w_5*(e/g^5)^c_5 =',w_5*(e/g^5)^c_5)
+print('Has this equation passed the verification?',u^z_5==w_5*(e/g^5)^c_5)
+print()
+
+print('8. Verify the true conversation ((v_6,w_6),c_6,z_6) for (g,u,v,e/g^6):')
+print()
+print('g^z_6 =',g^z_6)
+print('v_6*v^c_6 =',v_6*v^c_6)
+print('Has this equation passed the verification?',g^z_6==v_6*v^c_6)
+print()
+print('u^z_6 =',u^z_6)
+print('w_6*(e/g^6)^c_6 =',w_6*(e/g^6)^c_6)
+print('Has this equation passed the verification?',u^z_6==w_6*(e/g^6)^c_6)
+print()
+
+print('9. Verify the simulated conversation ((v_7,w_7),c_7,z_7) for (g,u,v,e/g^7):')
+print()
+print('g^z_7 =',g^z_7)
+print('v_7*v^c_7 =',v_7*v^c_7)
+print('Has this equation passed the verification?',g^z_7==v_7*v^c_7)
+print()
+print('u^z_7 =',u^z_7)
+print('w_7*(e/g^7)^c_7 =',w_7*(e/g^7)^c_7)
+print('Has this equation passed the verification?',u^z_7==w_7*(e/g^7)^c_7)
+print()
